@@ -375,7 +375,7 @@ exports.getSectionYearSubstrands = () => {
   // });
 }
 
-exports.remove = (req, res) => {
+exports.remove = (req, res) => {         
   const slug = req.params.slug.toLowerCase();
   Year.findOneAndRemove({ slug }).exec((err, data) => {
     if (err) {
