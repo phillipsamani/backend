@@ -34,7 +34,7 @@ exports.create = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields) => {
-    const { subject, section, identifier, differentiator, title, body } = fields;
+    const { subject, section, differentiator, title, body } = fields;
 
     if (!differentiator || differentiator.length === 0) {
       return res.status(400).json({
@@ -50,7 +50,7 @@ exports.create = (req, res) => {
     let foreword = new Foreword();
     foreword.subject = subject;
     foreword.section = section;
-    foreword.identifier = identifier;
+    
     foreword.title = title;
     foreword.differentiator = differentiator;
     foreword.body = body;

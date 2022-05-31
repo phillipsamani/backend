@@ -4,10 +4,9 @@ const { ObjectId } = mongoose.Schema;
 const syllabusSchema = new mongoose.Schema(
   {
     category: { type: ObjectId, ref: "Category" },
-    // years: [{ type: ObjectId, ref: "Year" }],
-    // sections: [{ type: ObjectId, ref: "Section" }],
     strands: [{ type: ObjectId, ref: "Strand" }],
     subject: { type: ObjectId, ref: "Subject" },
+    years: [{ type: ObjectId, ref: "Year" }],
     name: {
       type: String,
     },

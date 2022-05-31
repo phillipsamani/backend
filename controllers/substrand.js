@@ -163,17 +163,17 @@ exports.read = (req, res) => {
   Substrand.findOne({ slug })
     .populate("strand", "_id name")
     .populate("subject", "_id name")
-    .populate("sections", "_id name slug")
+    // .populate("sections", "_id name slug")
     .populate("years", "_id name slug")
     .populate("year", "_id name slug")
     .populate("outcomes", "_id general assessment indicators slug")
-    // .populate("terms", "_id name")
-    // .populate("term", "_id name")
+    .populate("terms", "_id name")
+    .populate("term", "_id name")
     // .populate({
     //   path: "outcomes",
     //   populate: { path: "indicators", model: "Indicator" },
     // })
-    .select("name periods sections terms term statement strand outcomes subject years year")
+    .select("strand subject year years term terms statement name periods outcomes slug ")
     .exec((err, data) => {
       if (err) {
         return res.json({

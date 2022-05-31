@@ -5,7 +5,6 @@ const acknowledgementSchema = new mongoose.Schema(
   {
     subject: { type: ObjectId, ref: "Subject" },
     section: { type: ObjectId, ref: "Section" },
-    
     differentiator: {
       type: String,
     },

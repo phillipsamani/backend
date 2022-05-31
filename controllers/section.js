@@ -261,7 +261,8 @@ exports.getSectionSyllabus = (req, res) => {
         });
       }
       // res.json(data);
-      Foreword.find({ section: section, subject: { $in: subject } })
+      // console.log(section)
+      Foreword.findOne({ section: section, subject: { $in: subject } })
         .populate("identifier", "_id title slug")
         .select("_id subject section identifier title body slug")
         .exec((err, foreword) => {
@@ -270,7 +271,7 @@ exports.getSectionSyllabus = (req, res) => {
               error: errorHandler(err),
             });
           }
-          //res.json(data);
+          // console.log(foreword)
           Introduction.find({ section: section, subject: { $in: subject } })
             .exec((err, introduction) => {
               if (err) {

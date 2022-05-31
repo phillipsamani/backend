@@ -37,13 +37,9 @@ exports.create = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields) => {
-    const { subject, identifier, differentiator, section, title, body } = fields;
+    const { subject, differentiator, section, title, body } = fields;
 
-    if (!identifier || identifier.length === 0) {
-      return res.status(400).json({
-        error: "A statement is requied for the slug development",
-      });
-    }
+    
     if (!body || body.length === 0) {
       return res.status(400).json({
         error: "A body is required",
@@ -53,7 +49,7 @@ exports.create = (req, res) => {
     let acknowledgement = new Acknowledgement();
     acknowledgement.subject = subject;
     acknowledgement.section = section;
-    acknowledgement.identifier = identifier;
+    
     acknowledgement.differentiator = differentiator
     acknowledgement.title = title;
     acknowledgement.body = body;

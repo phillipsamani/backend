@@ -5,7 +5,7 @@ const forewordSchema = new mongoose.Schema(
   {
     subject: { type: ObjectId, ref: "Subject" },
     section: { type: ObjectId, ref: "Section"},
-    identifier: { type: ObjectId, ref: "Section" },
+    
     title: {
       type: String,
     },

@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema;
 const yearSchema = new mongoose.Schema(
   {
     name: {
-      type: Number,
+      type: String,
       required: true,
     },
     slug: {

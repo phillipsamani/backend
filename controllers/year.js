@@ -356,7 +356,7 @@ exports.getSectionYearSubstrands = () => {
   //       error: errorHandler(err),
   //     });
   //   }
-  console.log(subject)
+  // console.log(subject)
   // Substrand.find({ years: year, subject: { $in: subject } })
   //   .populate("years", "_id name")
   //   .populate("substrands", "_id title slug")

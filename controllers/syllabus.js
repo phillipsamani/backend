@@ -49,7 +49,8 @@ exports.create = (req, res) => {
       subject,
       category,
       name,
-      strands
+      strands,
+      years
     } = fields;
 
     if (!excerpt || !excerpt.length) {
@@ -81,6 +82,7 @@ exports.create = (req, res) => {
     syllabus.slug = slugify(name).toLowerCase();
     
     let arrayOfStrands = strands && strands.split(",");
+    let arrayOfYears = years && years.split(",");
   
     if (files.photo) {
       if (files.photo.size > 10000000) {
@@ -110,13 +112,28 @@ exports.create = (req, res) => {
         .select(
           "_id excerpt strands years category name description slug"
         )
-        .exec((err, result) => {
+        .exec((err, output) => {
           if (err) {
             return res.status(400).json({
               error: errorHandler(err),
             });
           } else {
-            res.json(result);
+            // res.json(result);
+            Syllabus.findByIdAndUpdate(
+              output._id,
+              { $push: { years: arrayOfYears } },
+              { new: true }
+            )
+              
+              .exec((err, data) => {
+                if (err) {
+                  return res.status(400).json({
+                    error: errorHandler(err),
+                  });
+                } else {
+                  res.json(result);
+                }
+              });
             
           }
         });
@@ -239,16 +256,15 @@ exports.list = (req, res) => {
         return res.json({
           error: errorHandler(err),
         });
-      }
+      }        
       res.json(data);
     });
 };
 
 exports.read = (req, res) => {
-  const slug = req.params.slug.toLowerCase();
+  const slug = req.params.slug.toLowerCase();         
   // const { slug } = req.body.syllabus
   Syllabus.findOne({ slug })
-    
     .populate("subject", "_id name slug")
     .populate("category", "_id name years slug")
     .populate({
