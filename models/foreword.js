@@ -5,15 +5,18 @@ const forewordSchema = new mongoose.Schema(
   {
     subject: { type: ObjectId, ref: "Subject" },
     section: { type: ObjectId, ref: "Section"},
-    
     title: {
       type: String,
+      required: true
     },
     differentiator: {    
       type: String,
       required: true
     },
-    body: { type: String },
+    body: { 
+      type: String,
+      required: true
+    },
     slug: {
       type: String,
       unique: true,

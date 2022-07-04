@@ -111,12 +111,12 @@ exports.read = (req, res) => {
 
 
     Category.findOne({ slug })
-        .populate("category", "_id name description slug ")
-        .populate({
-          path: "category",
-          populate: { path: "years", model: "Year" },
-        })
-        .select("_id name slug")
+        // .populate("category", "_id name description slug ")
+        // .populate({
+        //   path: "category",
+        //   populate: { path: "years", model: "Year" },
+        // })
+        .select("_id name description slug")
         .exec((err, category) => {
 
         if (err) {
@@ -139,7 +139,7 @@ exports.read = (req, res) => {
                         error: errorHandler(err),
                     });
                 }
-                res.json({ category: category, data });
+                res.json({category, data: data});
                 
             });
     });

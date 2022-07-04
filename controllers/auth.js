@@ -10,11 +10,11 @@ exports.signup = (req, res) => {
                 error: 'Email is taken'
             });
         }
-        const { name, email, password, student, teacher } = req.body;
+        const { firstName, secondName, email, password, student, teacher } = req.body;
         let username = shortId.generate();
         let profile = `${process.env.CLIENT_URL}/profile/${username}`;
 
-        let newUser = new User({ name, student, teacher, email, password, profile, username });
+        let newUser = new User({ firstName, secondName, student, teacher, email, password, profile, username });
         newUser.save((err, success) => {
             if (err) {
                 return res.status(400).json({
@@ -47,13 +47,13 @@ exports.signin = (req, res) => {
             });
         }
         // generate a token and send to client
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '5d' });
 
-        res.cookie('token', token, { expiresIn: '1d' });
-        const { _id, username, name, email, role, teacher, student } = user;
+        res.cookie('token', token, { expiresIn: '5d' });
+        const { _id, username, email, admin, teacher, student } = user;
         return res.json({
             token,
-            user: { _id, username, name, email, role, teacher, student }
+            user: { _id, username, email, admin, teacher, student }
         });
     });
 };
@@ -91,7 +91,7 @@ exports.adminMiddleware = (req, res, next) => {
             });
         }
 
-        if (user.role !== 1) {
+        if (user.admin !== 1) {
             return res.status(400).json({
                 error: 'Admin resource. Access denied'
             });

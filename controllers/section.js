@@ -170,6 +170,8 @@ exports.getSyllabusSections = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   const { subject } = req.body.syllabus;
 
+  
+
   Section.findOne({ slug })
     .exec((err, section) => {
       if (err) {
@@ -177,16 +179,16 @@ exports.getSyllabusSections = (req, res) => {
           error: errorHandler(err),
         });
       }
+
       // res.json(data);
       Foreword.find({ section: section, subject: { $in: subject } })
-        .populate("identifier", "_id title slug")
-        .select("_id subject section identifier title body slug")
         .exec((err, foreword) => {
           if (err) {
             return res.json({
               error: errorHandler(err),
             });
           }
+          
           //res.json(data);
           Introduction.find({ section: section, subject: { $in: subject } })
             .exec((err, introduction) => {
@@ -195,7 +197,6 @@ exports.getSyllabusSections = (req, res) => {
                   error: errorHandler(err),
                 });
               }
-              // res.json({foreword, introduction});
               Acknowledgement.find({ section: section, subject: { $in: subject } })
                 .exec((err, acknowledgement) => {
                   if (err) {
@@ -203,13 +204,7 @@ exports.getSyllabusSections = (req, res) => {
                       error: errorHandler(err),
                     });
                   }
-                  // res.json({
-                  //   section,
-                  //   foreword: foreword,
-                  //   introduction: introduction,
-                  //   acknowledgement: acknowledgement
-                  // });
-
+                  
                   Rationale.find({ section: section, subject: { $in: subject } })
                     .exec((err, rationale) => {
                       if (err) {
@@ -217,13 +212,7 @@ exports.getSyllabusSections = (req, res) => {
                           error: errorHandler(err),
                         });
                       }
-                      // res.json({
-                      //   section,
-                      //   foreword: foreword,
-                      //   introduction: introduction,
-                      //   acknowledgement: acknowledgement,
-                      //   rationale: rationale
-                      // });
+                      
                       Aim.find({ section: section, subject: { $in: subject } })
                       .exec((err, aim) => {
                         if (err) {
@@ -253,6 +242,8 @@ exports.getSectionSyllabus = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   const { subject } = req.body.data;
 
+  
+
   Section.findOne({ slug })
     .exec((err, section) => {
       if (err) {
@@ -260,18 +251,18 @@ exports.getSectionSyllabus = (req, res) => {
           error: errorHandler(err),
         });
       }
+      
       // res.json(data);
-      // console.log(section)
-      Foreword.findOne({ section: section, subject: { $in: subject } })
-        .populate("identifier", "_id title slug")
-        .select("_id subject section identifier title body slug")
+      Foreword.find({ section: section, subject: { $in: subject } })
+        
         .exec((err, foreword) => {
           if (err) {
             return res.json({
               error: errorHandler(err),
             });
           }
-          // console.log(foreword)
+          
+          //res.json(data);
           Introduction.find({ section: section, subject: { $in: subject } })
             .exec((err, introduction) => {
               if (err) {
@@ -287,13 +278,7 @@ exports.getSectionSyllabus = (req, res) => {
                       error: errorHandler(err),
                     });
                   }
-                  // res.json({
-                  //   section,
-                  //   foreword: foreword,
-                  //   introduction: introduction,
-                  //   acknowledgement: acknowledgement
-                  // });
-
+                  
                   Rationale.find({ section: section, subject: { $in: subject } })
                     .exec((err, rationale) => {
                       if (err) {
@@ -301,13 +286,7 @@ exports.getSectionSyllabus = (req, res) => {
                           error: errorHandler(err),
                         });
                       }
-                      // res.json({
-                      //   section,
-                      //   foreword: foreword,
-                      //   introduction: introduction,
-                      //   acknowledgement: acknowledgement,
-                      //   rationale: rationale
-                      // });
+                      
                       Aim.find({ section: section, subject: { $in: subject } })
                       .exec((err, aim) => {
                         if (err) {
@@ -332,6 +311,93 @@ exports.getSectionSyllabus = (req, res) => {
         })
     });
 }
+
+
+// exports.getSectionSyllabus = (req, res) => {
+//   const slug = req.params.slug.toLowerCase();
+//   const { subject } = req.body.data;
+
+//   Section.findOne({ slug })
+//     .exec((err, section) => {
+//       if (err) {
+//         return res.json({
+//           error: errorHandler(err),
+//         });
+//       }
+//       // res.json(data);
+//       // console.log(section)
+//       Foreword.find({ section: section, subject: { $in: subject } })
+//         // .populate("identifier", "_id title slug")
+//         // .select("_id subject section identifier title body slug")
+//         .exec((err, foreword) => {
+//           if (err) {
+//             return res.json({
+//               error: errorHandler(err),
+//             });
+//           }
+//           // console.log(foreword)
+//           Introduction.find({ section: section, subject: { $in: subject } })
+//             .exec((err, introduction) => {
+//               if (err) {
+//                 return res.json({
+//                   error: errorHandler(err),
+//                 });
+//               }
+//               // res.json({foreword, introduction});
+//               Acknowledgement.find({ section: section, subject: { $in: subject } })
+//                 .exec((err, acknowledgement) => {
+//                   if (err) {
+//                     return res.json({
+//                       error: errorHandler(err),
+//                     });
+//                   }
+//                   // res.json({
+//                   //   section,
+//                   //   foreword: foreword,
+//                   //   introduction: introduction,
+//                   //   acknowledgement: acknowledgement
+//                   // });
+
+//                   Rationale.find({ section: section, subject: { $in: subject } })
+//                     .exec((err, rationale) => {
+//                       if (err) {
+//                         return res.json({
+//                           error: errorHandler(err),
+//                         });
+//                       }
+//                       // res.json({
+//                       //   section,
+//                       //   foreword: foreword,
+//                       //   introduction: introduction,
+//                       //   acknowledgement: acknowledgement,
+//                       //   rationale: rationale
+//                       // });
+//                       Aim.find({ section: section, subject: { $in: subject } })
+//                       .exec((err, aim) => {
+//                         if (err) {
+//                           return res.json({
+//                             error: errorHandler(err),
+//                           });
+//                         }
+//                         res.json({
+//                           section,
+//                           foreword: foreword,
+//                           introduction: introduction,
+//                           acknowledgement: acknowledgement,
+//                           rationale: rationale,
+//                           aim: aim
+//                         });
+  
+//                       })
+//                     })
+//                 })
+//             })
+
+//         })
+//     });
+// }
+
+
 // exports.getSectionWithSyllabus = (req, res) => {
 //   const slug = req.params.slug.toLowerCase();
 //   const { subject } = req.body.syllabus;

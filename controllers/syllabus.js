@@ -1,7 +1,9 @@
 const Syllabus = require("../models/syllabus");
 const Category = require("../models/category");
 const Strand = require("../models/strand");
-const Section = require('../models/section')
+const Section = require('../models/section');
+const Subject = require('../models/subject')
+const Foreword = require ('../models/foreword')
 // const Rationale = require("../models/rationale");
 // const Aim = require("../models/aim");
 // const Introduction = require("../models/introduction");
@@ -141,6 +143,28 @@ exports.create = (req, res) => {
   });
 };
 
+exports.syllabusForeword = (req, res) => {
+  const slug = req.params.slug.toLowerCase();
+  Subject.findOne({ slug }).exec((err, subject) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+    Foreword.find({ subject: { $in: subject } })
+      .populate("subject", "_id name slug")
+      .exec((err, data) => {
+        if (err) {
+          return res.status(400).json({
+            error: errorHandler(err),
+          });
+        }
+        res.json(data);
+      });
+  });
+};
+
+
 // exports.listAllSyllabusesWithCategories = (req, res) => {
 //   let limit = req.body.limit ? parseInt(req.body.limit) : 10;
 //   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
@@ -262,7 +286,8 @@ exports.list = (req, res) => {
 };
 
 exports.read = (req, res) => {
-  const slug = req.params.slug.toLowerCase();         
+  const slug = req.params.slug.toLowerCase();     
+    
   // const { slug } = req.body.syllabus
   Syllabus.findOne({ slug })
     .populate("subject", "_id name slug")
@@ -272,7 +297,7 @@ exports.read = (req, res) => {
       populate: { path: "years", model: "Year" },
     })
     .select(
-      "_id category subject strands description name slug "
+      "_id category years subject strands description name slug "
     )
     .exec((err, syllabus) => {
       if (err) {
@@ -280,7 +305,7 @@ exports.read = (req, res) => {
           error: errorHandler(err),
         });
       }
-      res.json({ syllabus });
+      res.json({syllabus: syllabus});
     });
 };
 

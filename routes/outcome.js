@@ -6,10 +6,10 @@ const {
   createSpecific,
   // list,
   // listRelatedOutcomes,
-  // outcomeWithSubstrandAndStrand,
+  outcomeWithSubstrandAndStrand,
   // outcomeYearSubstrands,
   // createNote,
-  // read,
+  read,
   // photo,     
   // remove,
 } = require("../controllers/outcome");
@@ -32,7 +32,7 @@ router.put(
 // router.post("/outcome-substrand-strand/:slug", outcomeWithSubstrandAndStrand);
 // router.post("/outcome-year-substrands/:slug", outcomeYearSubstrands);
 // router.get("/outcomes", list);
-// router.get("/outcome/:slug", read);
+router.get("/outcome/:slug", read);
 // router.get("/outcome/photo/:slug", photo);
 // router.delete("/outcome/:slug", requireSignin, adminMiddleware, remove);
 

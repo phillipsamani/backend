@@ -62,6 +62,8 @@ exports.create = (req, res) => {
       strand,
       general,
       assessment,
+      question,
+      schedule,
       substrand,
     } = fields;
 
@@ -98,6 +100,8 @@ exports.create = (req, res) => {
     outcome.assessment = assessment;
     outcome.indicators = indicators;
     outcome.year = year;
+    outcome.question = question;
+    outcome.schedule = schedule;
     outcome.term = term;
     outcome.substrand = substrand;
     outcome.slug = slugify(general).toLowerCase();
@@ -352,15 +356,16 @@ exports.list = (req, res) => {
 exports.read = (req, res) => {
   const slug = req.params.slug.toLowerCase();
   Outcome.findOne({ slug })
-    .populate("substrand", "_id title")
-    .populate("strand", "_id title slug")
-    .populate({
-      path: "strand",
-      populate: { path: "years", model: "Year" },
-    })
+    .populate("substrand", "_id name slug")
+    .populate("strand", "_id name slug")
+    .populate("years", "_id name slug")
+    // .populate({
+    //   path: "strand",
+    //   populate: { path: "years", model: "Year" },
+    // })
     .populate("year", "_id name slug")
     .populate("subject", "_id name slug")
-    .select("_id content general assessment indicators strand")
+    .select("_id year years general substrand strand assessment subject indicators")
     .exec((err, data) => {
       if (err) {
         return res.status(400).json({

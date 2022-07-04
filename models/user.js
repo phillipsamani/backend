@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
     {
+        group: { type: ObjectId, ref: "Group"},
         username: {
             type: String,
             trim: true,
@@ -12,7 +14,13 @@ const userSchema = new mongoose.Schema(
             index: true,
             lowercase: true
         },
-        name: {
+        firstName: {
+            type: String,
+            trim: true,
+            required: true,
+            max: 32
+        },
+        secondName: {
             type: String,
             trim: true,
             required: true,
@@ -37,7 +45,7 @@ const userSchema = new mongoose.Schema(
         about: {
             type: String
         },
-        role: {
+        admin: {
             type: Number,
             default: 0
         },
@@ -53,6 +61,7 @@ const userSchema = new mongoose.Schema(
             data: Buffer,
             contentType: String
         },
+        createdBy: { type: ObjectId, ref: "User"},
         resetPasswordLink: {
             data: String,
             default: ''

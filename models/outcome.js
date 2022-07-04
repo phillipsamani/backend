@@ -14,6 +14,8 @@ const outcomeSchema = new mongoose.Schema(
     general: { type: {} },
     assessment: { type: {} },
     indicators: { type: {} },
+    question: { type: {} },
+    schedule: { type: {} },
     mtitle: { type: String },
     photo: {
       data: Buffer,

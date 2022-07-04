@@ -36,6 +36,17 @@ exports.create = (req, res) => {
   form.parse(req, (err, fields) => {
     const { subject, section, differentiator, title, body } = fields;
 
+    if (!subject || subject.length === 0) {
+      return res.status(400).json({
+        error: "A subject is required",
+      });
+    }
+    if (!section || section.length === 0) {
+      return res.status(400).json({
+        error: "A section is required",
+      });
+    }
+
     if (!differentiator || differentiator.length === 0) {
       return res.status(400).json({
         error: "A statement is requied for the slug development",
@@ -50,7 +61,6 @@ exports.create = (req, res) => {
     let foreword = new Foreword();
     foreword.subject = subject;
     foreword.section = section;
-    
     foreword.title = title;
     foreword.differentiator = differentiator;
     foreword.body = body;
@@ -92,5 +102,19 @@ exports.getSyllabusForeword = (req, res) => {
 
       });
   });
+};
+
+exports.list = (req, res) => {
+  Foreword.find({})
+      .populate("subject", "_id name slug")
+      .select("_id subject slug")
+      .exec((err, data) => {
+          if (err) {
+              return res.status(400).json({
+                  error: errorHandler(err),
+              });
+          }
+          res.json(data);
+      });
 };
 
